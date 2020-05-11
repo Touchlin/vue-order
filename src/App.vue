@@ -1,27 +1,40 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <v-header :seller="seller"></v-header>
+    <tab></tab>
+    <keep-alive exclude="sure-order">
+      <router-view :seller="seller"></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import vHeader from 'components/v-header/v-header'
+import tab from 'components/tab/tab'
+import { seller } from 'api'
 
 export default {
   name: 'App',
+  data() {
+    return {
+      seller: {}
+    }
+  },
+  methods: {
+    getSeller() {
+      seller().then(res => {
+        this.seller = res
+      })
+    }
+  },
   components: {
-    HelloWorld
+    vHeader,
+    tab
+  },
+  created() {
+    this.getSeller()
   }
 }
 </script>
 
-<style lang="stylus">
-#app
-  font-family Avenir, Helvetica, Arial, sans-serif
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  text-align center
-  color #2c3e50
-  margin-top 60px
-</style>
+<style lang="stylus"></style>
